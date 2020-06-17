@@ -84,3 +84,13 @@ h1 {
     margin: 100px 30px;
 
 }
+
+/* Highscores page */
+.highscores-section {
+    display: none;
+}
+
+
+.highscore-btn{
+    display: inline!important;
+}

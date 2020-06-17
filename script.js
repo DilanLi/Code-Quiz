@@ -8,47 +8,9 @@ var answer4 = document.querySelector(".answer4");
 var quizSection = document.querySelector(".quiz-section");
 var individualResult = document.querySelector("#right-or-wrong");
 var initialsSection = document.querySelector(".initials-section");
-var submitButton = document.querySelector(".submit-btn")
+var submitButton = document.querySelector(".submit-btn");
+var highscoreSection = document.querySelector(".highscores-section");
 // var buttons = document.querySelectorAll(".btn-warning");
-
-//When Start Quiz botton is clicked
-    //hide quiz intro and show quiz questions
-    startQuizBtn.addEventListener("click", function(){
-        document.querySelector(".jumbotron").style.display = "none";
-        document.querySelector(".quiz-section").style.display = "block";
-        })
-    //display first quiz question
-    startQuizBtn.addEventListener("click", goToNextQuestion)
-    // when any button is clicked, the next question will appear
-
-function goToNextQuestion(){
-        question.textContent = questionsArray[correctIndex];
-        answer1.textContent = answersArray[correctIndex].content1;
-        answer2.textContent = answersArray[correctIndex].content2;
-        answer3.textContent = answersArray[correctIndex].content3;
-        answer4.textContent = answersArray[correctIndex].content4;
-    }
-
-
-    //timer starts
-    startQuizBtn.addEventListener("click", startTimer)
-    
-    var secondsLeft = 76;
-    function startTimer(){
-        var timerInterval = setInterval(function() {
-            secondsLeft --;
-            timer.textContent =  "Time: " + secondsLeft + " seconds";
-        
-            //if run out of time, alert game over
-            if (secondsLeft === 0) {
-              clearInterval(timerInterval);
-            }
-          }, 1000);
-    }   
-
-//need to add in when time is up game is over
-
-
 //array that contains all questions
 var question1 = "What best describes Javascript?"
 var question2 = "Where on page should a script tag be placed?"
@@ -105,11 +67,69 @@ var correctAnswer5 = quizAnswers5.content4;
 var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, correctAnswer4, correctAnswer5]
 
 
+
+//When Start Quiz botton is clicked
+    //hide quiz intro and show quiz questions
+    startQuizBtn.addEventListener("click", function(){
+        document.querySelector(".jumbotron").style.display = "none";
+        quizSection.style.display = "block";
+        })
+    //display first quiz question
+    startQuizBtn.addEventListener("click", goToNextQuestion)
+    // when any button is clicked, the next question will appear
+
+
+    var correctIndex = 0;  
+function goToNextQuestion(){
+    if (correctIndex === questionsArray.length - 1) {
+        quizSection.style.display = "none";
+        initialsSection.style.display = "inline";
+    } else {
+        question.textContent = questionsArray[correctIndex];
+        answer1.textContent = answersArray[correctIndex].content1;
+        answer2.textContent = answersArray[correctIndex].content2;
+        answer3.textContent = answersArray[correctIndex].content3;
+        answer4.textContent = answersArray[correctIndex].content4;
+    }
+    }
+
+
+    //timer starts
+    startQuizBtn.addEventListener("click", startTimer)
+    
+    var secondsLeft = 76;
+    var timerInterval;
+    function startTimer(){
+        timerInterval = setInterval(function() {
+            secondsLeft --;
+            timer.textContent =  "Time: " + secondsLeft + " seconds";
+        
+            //if run out of time, alert game over
+            if (secondsLeft === 0) {
+              clearInterval(timerInterval);
+            }
+          }, 1000);
+        return timerInterval;
+    }   
+
+//need to add in when time is up game is over
+
+
+
+
+
+
+
+
+
+
+
+
+
 //determine if user answered correctly
 var score = 0;
 quizSection.addEventListener("click", determineCorrectAnswer)
 
-var correctIndex = 0;
 
 function determineCorrectAnswer(event){
     if(event.target.matches(".btn-warning")){
@@ -130,25 +150,58 @@ function determineCorrectAnswer(event){
             }
             correctIndex++;
     }
+    return secondsLeft;
 };
 
-//When all the questons are answered, the goToNextQuestion will stop and initials page will show for user to enter their info
+//go to next question when answer buttons are clicked
 quizSection.addEventListener("click", function(event){
-    // if(event.target.matches(".btn-warning")){
-    //     if (correctIndex === 5) {
-    //         quizSection.style.display = "none";
-    //         initialsSection.style.display = "inline";
-    //     }
+    if(event.target.matches(".btn-warning")){
         goToNextQuestion();
-    }
-)
+    }})
 
-//submit buttion
+
+//submit buttion: 
+//submits user score and initials to local storage, show and display highscores on next page
 submitButton.addEventListener("click", function(event){
     event.preventDefault();
+        //show highscores page
+        initialsSection.style.display = "none";
+        document.querySelector(".highscores-section").style.display = "block";
+        document.querySelector(".user-scores").style.display = "block";
+
+    //timer stops 
+    clearInterval(timerInterval);
+
+    newUser();
 })
 
+function newUser(){
+    //create p element to hold user initials and scores
+    var p = document.createElement("p");
+    var userInitial = document.querySelector("#initials").value;
+    document.querySelector(".user-scores").appendChild(p);
 
+    //put user initals and scores to local storage and push to p element on html
+    localStorage.setItem("userName", userInitial);
+    localStorage.setItem("userScore", secondsLeft)
+    var name = localStorage.getItem("userName");
+    var score = localStorage.getItem("userScore");
+    p.textContent = name + ": " + score;
+}
 
+//start the quiz again when "Challenge Again" button is pressed
+document.querySelector(".challenge-again").addEventListener("click", function(){
+    correctIndex = 0;
+    goToNextQuestion();
+    secondsLeft = 76;
+    startTimer();
+    quizSection.style.display = "block";
+    highscoreSection.style.display = "none";
+})
 
+//clear highscore when "Clear Highscores" button is pressed
+document.querySelector(".clear-highscores").addEventListener("click", function(){
+//    localStorage.clear();
+   document.querySelector(".user-scores").style.display = "none";
+})
 
