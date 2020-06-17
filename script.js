@@ -46,6 +46,8 @@ function goToNextQuestion(){
           }, 1000);
     }   
 
+//need to add in when time is up game is over
+
 
 //array that contains all questions
 var question1 = "What best describes Javascript?"
@@ -116,14 +118,15 @@ function determineCorrectAnswer(event){
         console.log("chosen answer : " + chosenAnswer);
         console.log("correct answer : "  + correctAnswersArray[correctIndex]);
         console.log("correct index: " + correctIndex)
+        individualResult.textContent = " ";
+        individualResult.style.display = "block";
             if (chosenAnswer === correctAnswersArray[correctIndex]){
-                score ++;
-                secondsLeft - 10;
                 individualResult.textContent = "Correct!!!";
                 setTimeout(function(){ individualResult.style.display = "none"}, 500);
             } else {
                 individualResult.textContent = "Oooops..."
                 setTimeout(function(){ individualResult.style.display = "none"}, 500);
+                secondsLeft -= 10;
             }
             correctIndex++;
     }
@@ -131,14 +134,14 @@ function determineCorrectAnswer(event){
 
 //When all the questons are answered, the goToNextQuestion will stop and initials page will show for user to enter their info
 quizSection.addEventListener("click", function(event){
-    if(event.target.matches(".btn-warning")){
-        if (correctIndex === 5) {
-            quizSection.style.display = "none";
-            initialsSection.style.display = "inline";
-        }
+    // if(event.target.matches(".btn-warning")){
+    //     if (correctIndex === 5) {
+    //         quizSection.style.display = "none";
+    //         initialsSection.style.display = "inline";
+    //     }
         goToNextQuestion();
     }
-})
+)
 
 //submit buttion
 submitButton.addEventListener("click", function(event){
