@@ -81,9 +81,13 @@ var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, corre
 
     var correctIndex = 0;  
 function goToNextQuestion(){
+    //if all questions answered, take user to initials page to enter info
     if (correctIndex === questionsArray.length - 1) {
         quizSection.style.display = "none";
         initialsSection.style.display = "inline";
+        //timer stops 
+        clearInterval(timerInterval);
+
     } else {
         question.textContent = questionsArray[correctIndex];
         answer1.textContent = answersArray[correctIndex].content1;
@@ -168,9 +172,6 @@ submitButton.addEventListener("click", function(event){
         initialsSection.style.display = "none";
         document.querySelector(".highscores-section").style.display = "block";
         document.querySelector(".user-scores").style.display = "block";
-
-    //timer stops 
-    clearInterval(timerInterval);
 
     newUser();
 })
