@@ -170,6 +170,7 @@ function newUser() {
         userInitial = "anonymous";
     } 
         localStorage.setItem(userInitial, secondsLeft);
+        document.querySelector(".user-scores").textContent = " ";
         var p = document.createElement("p");
         p.textContent = userInitial + ": " + secondsLeft;
         document.querySelector(".user-scores").appendChild(p);    
