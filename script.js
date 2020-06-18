@@ -149,26 +149,30 @@ quizSection.addEventListener("click", function(event){
         goToNextQuestion();
     }})
 
+var userInitial = document.querySelector("#initials").value;
 
 //submit buttion: 
 submitButton.addEventListener("click", function(event){
     event.preventDefault();
+    newUser();        
         //show highscores page
         initialsSection.style.display = "none";
         document.querySelector(".highscores-section").style.display = "block";
         document.querySelector(".user-scores").style.display = "block";
     //record user info
-    newUser();        
 })
 
 
 //function that record user in local storage and pushes to html
 function newUser() {
-    var userInitial = document.querySelector("#initials").value;
-    localStorage.setItem(userInitial, secondsLeft);
-    var p = document.createElement("p");
-    p.textContent = userInitial + ": " + secondsLeft;
-    document.querySelector(".user-scores").appendChild(p);
+    if (userInitial === "") {
+        userInitial = "anonymous";
+    } 
+        localStorage.setItem(userInitial, secondsLeft);
+        var p = document.createElement("p");
+        p.textContent = userInitial + ": " + secondsLeft;
+        document.querySelector(".user-scores").appendChild(p);    
+    
 }
 
 
