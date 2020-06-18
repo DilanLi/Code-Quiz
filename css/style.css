@@ -14,6 +14,10 @@ body {
     float: right;
 }
 
+#highscore:hover {
+    color: #837f0c;
+}
+
 /* quiz instruction jumbotron */
 .jumbotron {
     margin-top: 30px;
@@ -67,17 +71,12 @@ h1 {
 /* initials page */
 
 
-#initials {
-    float: right;
-}
-
-.submit-btn {
-    clear: both;
-    float: right;
-}
-
 .initials-section {
     display: none;
+}
+
+#initials:focus {
+    border: none!important;
 }
 
 .margin {

@@ -10,7 +10,8 @@ var individualResult = document.querySelector("#right-or-wrong");
 var initialsSection = document.querySelector(".initials-section");
 var submitButton = document.querySelector(".submit-btn");
 var highscoreSection = document.querySelector(".highscores-section");
-// var buttons = document.querySelectorAll(".btn-warning");
+var viewHighscores = document.querySelector("#highscore");
+
 //array that contains all questions
 var question1 = "What best describes Javascript?"
 var question2 = "Where on page should a script tag be placed?"
@@ -53,8 +54,7 @@ var quizAnswers5 = {
     content3: "function getFruits()",
     content4: "getFruits()"
 }
-
-//array that contains all answers
+//array that contains answers objects
 var answersArray = [quizAnswers1, quizAnswers2, quizAnswers3, quizAnswers4, quizAnswers5]
 
 
@@ -83,10 +83,11 @@ var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, corre
 function goToNextQuestion(){
     //if all questions answered, take user to initials page to enter info
     if (correctIndex === questionsArray.length - 1) {
-        quizSection.style.display = "none";
+        setTimeout(function(){quizSection.style.display = "none";
         initialsSection.style.display = "inline";
+    }, 500);
         //timer stops 
-        clearInterval(timerInterval);
+        setTimeout(function(){clearInterval(timerInterval)}, 500);
 
     } else {
         question.textContent = questionsArray[correctIndex];
@@ -108,26 +109,15 @@ function goToNextQuestion(){
             secondsLeft --;
             timer.textContent =  "Time: " + secondsLeft + " seconds";
         
-            //if run out of time, alert game over
+            //if run out of time, go straight to user initial page to record score
             if (secondsLeft === 0) {
               clearInterval(timerInterval);
+              quizSection.style.display = "none";
+              initialsSection.style.display = "inline";
             }
           }, 1000);
         return timerInterval;
     }   
-
-//need to add in when time is up game is over
-
-
-
-
-
-
-
-
-
-
-
 
 
 //determine if user answered correctly
@@ -138,10 +128,6 @@ quizSection.addEventListener("click", determineCorrectAnswer)
 function determineCorrectAnswer(event){
     if(event.target.matches(".btn-warning")){
         var chosenAnswer = event.target.textContent;
-        console.log("event target: " + event.target)
-        console.log("chosen answer : " + chosenAnswer);
-        console.log("correct answer : "  + correctAnswersArray[correctIndex]);
-        console.log("correct index: " + correctIndex)
         individualResult.textContent = " ";
         individualResult.style.display = "block";
             if (chosenAnswer === correctAnswersArray[correctIndex]){
@@ -165,44 +151,59 @@ quizSection.addEventListener("click", function(event){
 
 
 //submit buttion: 
-//submits user score and initials to local storage, show and display highscores on next page
+var userInitial = document.querySelector("#initials").value;
+
 submitButton.addEventListener("click", function(event){
     event.preventDefault();
-        //show highscores page
-        initialsSection.style.display = "none";
-        document.querySelector(".highscores-section").style.display = "block";
-        document.querySelector(".user-scores").style.display = "block";
-
-    newUser();
+                //show highscores page
+                userInitial = document.querySelector("#initials").value;
+                initialsSection.style.display = "none";
+                document.querySelector(".highscores-section").style.display = "block";
+                document.querySelector(".user-scores").style.display = "block";
+            newUser();        
 })
 
+//pushes user info to html
 function newUser(){
-    //create p element to hold user initials and scores
-    var p = document.createElement("p");
-    var userInitial = document.querySelector("#initials").value;
-    document.querySelector(".user-scores").appendChild(p);
-
-    //put user initals and scores to local storage and push to p element on html
-    localStorage.setItem("userName", userInitial);
-    localStorage.setItem("userScore", secondsLeft)
-    var name = localStorage.getItem("userName");
-    var score = localStorage.getItem("userScore");
-    p.textContent = name + ": " + score;
+    localStorage.setItem(userInitial, secondsLeft);
+        var p = document.createElement("p");
+        p.textContent = userInitial + ": " + secondsLeft;
+        document.querySelector(".user-scores").appendChild(p);
 }
+
 
 //start the quiz again when "Challenge Again" button is pressed
 document.querySelector(".challenge-again").addEventListener("click", function(){
     correctIndex = 0;
-    goToNextQuestion();
+    // goToNextQuestion();
     secondsLeft = 76;
-    startTimer();
-    quizSection.style.display = "block";
+    // startTimer();
+    document.querySelector(".jumbotron").style.display = "block";
     highscoreSection.style.display = "none";
 })
 
-//clear highscore when "Clear Highscores" button is pressed
-document.querySelector(".clear-highscores").addEventListener("click", function(){
-//    localStorage.clear();
-   document.querySelector(".user-scores").style.display = "none";
-})
 
+//clear highscore when "Clear Highscores" button is pressed
+document.querySelector(".clear-highscores").addEventListener("click", clearLocalStorage);
+
+function clearLocalStorage() {
+    localStorage.clear();
+    document.querySelector(".user-scores").textContent = " ";
+    document.querySelector(".user-scores").style.display = "none";
+}
+
+//view highscores link
+viewHighscores.addEventListener("click", function(){
+    clearInterval(timerInterval);
+    document.querySelector(".jumbotron").style.display = "none";
+    quizSection.style.display = "none";
+    initialsSection.style.display = "none";
+    highscoreSection.style.display = "block";
+    document.querySelector(".user-scores").textContent = " ";
+    for (let i = 0; i< localStorage.length; i++) {
+        var p = document.createElement("p");
+        var user = localStorage.key(i);
+        var scores = localStorage.getItem(localStorage.key(i));
+        p.textContent = user + ": " + scores;
+        document.querySelector(".user-scores").appendChild(p);}
+    })
