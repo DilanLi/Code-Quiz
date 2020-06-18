@@ -1,3 +1,4 @@
+//querySelectors for html elements that will be referenced
 var startQuizBtn = document.querySelector(".start-quiz-btn");
 var timer = document.querySelector("#timer");
 var question = document.querySelector(".question");
@@ -66,9 +67,10 @@ var correctAnswer4 = quizAnswers4.content2;
 var correctAnswer5 = quizAnswers5.content4;
 var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, correctAnswer4, correctAnswer5]
 
-
-
 //When Start Quiz botton is clicked
+    //timer starts
+    startQuizBtn.addEventListener("click", startTimer)
+
     //hide quiz intro and show quiz questions
     startQuizBtn.addEventListener("click", function(){
         document.querySelector(".jumbotron").style.display = "none";
@@ -76,11 +78,11 @@ var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, corre
         })
     //display first quiz question
     startQuizBtn.addEventListener("click", goToNextQuestion)
-    // when any button is clicked, the next question will appear
 
 
     var correctIndex = 0;  
-function goToNextQuestion(){
+    //Go to next Question function
+    function goToNextQuestion(){
     //if all questions answered, take user to initials page to enter info
     if (correctIndex === questionsArray.length - 1) {
         setTimeout(function(){quizSection.style.display = "none";
@@ -88,7 +90,7 @@ function goToNextQuestion(){
     }, 500);
         //timer stops 
         setTimeout(function(){clearInterval(timerInterval)}, 500);
-
+    //if not all questions are answered, go to next question
     } else {
         question.textContent = questionsArray[correctIndex];
         answer1.textContent = answersArray[correctIndex].content1;
@@ -97,11 +99,8 @@ function goToNextQuestion(){
         answer4.textContent = answersArray[correctIndex].content4;
     }
     }
-
-
-    //timer starts
-    startQuizBtn.addEventListener("click", startTimer)
     
+    //Timer function
     var secondsLeft = 76;
     var timerInterval;
     function startTimer(){
@@ -120,14 +119,15 @@ function goToNextQuestion(){
     }   
 
 
-//determine if user answered correctly
-var score = 0;
+//determine if user answered correctly when an answer button is clicked
 quizSection.addEventListener("click", determineCorrectAnswer)
 
 
+//determine correct answer function
 function determineCorrectAnswer(event){
     if(event.target.matches(".btn-warning")){
         var chosenAnswer = event.target.textContent;
+        //reset question result if challenge again button is clicked
         individualResult.textContent = " ";
         individualResult.style.display = "block";
             if (chosenAnswer === correctAnswersArray[correctIndex]){
@@ -143,7 +143,7 @@ function determineCorrectAnswer(event){
     return secondsLeft;
 };
 
-//go to next question when answer buttons are clicked
+//Go to next question when any answer is clicked
 quizSection.addEventListener("click", function(event){
     if(event.target.matches(".btn-warning")){
         goToNextQuestion();
@@ -151,54 +151,59 @@ quizSection.addEventListener("click", function(event){
 
 
 //submit buttion: 
-var userInitial = document.querySelector("#initials").value;
-
 submitButton.addEventListener("click", function(event){
     event.preventDefault();
-                //show highscores page
-                userInitial = document.querySelector("#initials").value;
-                initialsSection.style.display = "none";
-                document.querySelector(".highscores-section").style.display = "block";
-                document.querySelector(".user-scores").style.display = "block";
-            newUser();        
+        //show highscores page
+        initialsSection.style.display = "none";
+        document.querySelector(".highscores-section").style.display = "block";
+        document.querySelector(".user-scores").style.display = "block";
+    //record user info
+    newUser();        
 })
 
-//pushes user info to html
-function newUser(){
+
+//function that record user in local storage and pushes to html
+function newUser() {
+    var userInitial = document.querySelector("#initials").value;
     localStorage.setItem(userInitial, secondsLeft);
-        var p = document.createElement("p");
-        p.textContent = userInitial + ": " + secondsLeft;
-        document.querySelector(".user-scores").appendChild(p);
+    var p = document.createElement("p");
+    p.textContent = userInitial + ": " + secondsLeft;
+    document.querySelector(".user-scores").appendChild(p);
 }
 
 
 //start the quiz again when "Challenge Again" button is pressed
 document.querySelector(".challenge-again").addEventListener("click", function(){
+    //reset question number index
     correctIndex = 0;
-    // goToNextQuestion();
+    //reset timer seconds
     secondsLeft = 76;
-    // startTimer();
+    //go to face intro page
     document.querySelector(".jumbotron").style.display = "block";
+    //hide current page
     highscoreSection.style.display = "none";
 })
 
 
 //clear highscore when "Clear Highscores" button is pressed
-document.querySelector(".clear-highscores").addEventListener("click", clearLocalStorage);
-
-function clearLocalStorage() {
+document.querySelector(".clear-highscores").addEventListener("click", function(){
     localStorage.clear();
+    //reset score list content
     document.querySelector(".user-scores").textContent = " ";
     document.querySelector(".user-scores").style.display = "none";
-}
+
+});
 
 //view highscores link
 viewHighscores.addEventListener("click", function(){
+    //stop timer if goes to highscore panel
     clearInterval(timerInterval);
+    //hide all other pages and show highscore panel
     document.querySelector(".jumbotron").style.display = "none";
     quizSection.style.display = "none";
     initialsSection.style.display = "none";
     highscoreSection.style.display = "block";
+    //reset previous content on highscore panel and loop through local storage to push all keys and values onto html
     document.querySelector(".user-scores").textContent = " ";
     for (let i = 0; i< localStorage.length; i++) {
         var p = document.createElement("p");
