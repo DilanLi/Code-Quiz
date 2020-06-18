@@ -137,6 +137,7 @@ function determineCorrectAnswer(event){
                 individualResult.textContent = "Oooops..."
                 setTimeout(function(){ individualResult.style.display = "none"}, 500);
                 secondsLeft -= 10;
+                timer.textContent =  "Time: " + secondsLeft + " seconds";
             }
             correctIndex++;
     }
@@ -149,22 +150,22 @@ quizSection.addEventListener("click", function(event){
         goToNextQuestion();
     }})
 
-var userInitial = document.querySelector("#initials").value;
 
 //submit buttion: 
 submitButton.addEventListener("click", function(event){
     event.preventDefault();
+    //record user info
     newUser();        
         //show highscores page
         initialsSection.style.display = "none";
         document.querySelector(".highscores-section").style.display = "block";
         document.querySelector(".user-scores").style.display = "block";
-    //record user info
 })
 
 
 //function that record user in local storage and pushes to html
 function newUser() {
+    var userInitial = document.querySelector("#initials").value;
     if (userInitial === "") {
         userInitial = "anonymous";
     } 
@@ -182,7 +183,8 @@ document.querySelector(".challenge-again").addEventListener("click", function(){
     correctIndex = 0;
     //reset timer seconds
     secondsLeft = 76;
-    //go to face intro page
+    timer.textContent =  "Time: 75 seconds";
+    //go to quiz intro page
     document.querySelector(".jumbotron").style.display = "block";
     //hide current page
     highscoreSection.style.display = "none";

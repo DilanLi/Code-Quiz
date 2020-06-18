@@ -28,3 +28,5 @@ link to quiz: https://dilanli.github.io/Code-Quiz/
 - Interface <br/>
 
     I decided to create the interface with two theme colors: black and yellow, which is the theme colors of the JavaScript logo. I hope you enjoy it!
+
+- Please refer to script.js for more detailed description of developing process in the comments.
