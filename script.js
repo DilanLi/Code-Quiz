@@ -122,7 +122,6 @@ var correctAnswersArray = [correctAnswer1, correctAnswer2, correctAnswer3, corre
 //determine if user answered correctly when an answer button is clicked
 quizSection.addEventListener("click", determineCorrectAnswer)
 
-
 //determine correct answer function
 function determineCorrectAnswer(event){
     if(event.target.matches(".btn-warning")){
@@ -144,6 +143,7 @@ function determineCorrectAnswer(event){
     return secondsLeft;
 };
 
+
 //Go to next question when any answer is clicked
 quizSection.addEventListener("click", function(event){
     if(event.target.matches(".btn-warning")){
@@ -156,7 +156,7 @@ submitButton.addEventListener("click", function(event){
     event.preventDefault();
     //record user info
     newUser();        
-        //show highscores page
+        //show recorded user initials and user score
         initialsSection.style.display = "none";
         document.querySelector(".highscores-section").style.display = "block";
         document.querySelector(".user-scores").style.display = "block";
