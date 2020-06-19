@@ -2,7 +2,7 @@
 
 ## Description
 This is a browswer based quiz on Javascript fundamentals. Upon opening the application, user will be presented rules of the quiz and a start button. The start button actives a 75 seconds timer, as well as multiple choice questions that dynamically updates with user clicks. 
-The purpose of building this application is to practice important developer skills such as traversing the DOM, adding event listeners, setting up and accessing the local storage. These skills are crucial in order to create a website that dynamically reacts to user inputs.
+The purpose of building this application is to practice important developer skills such as traversing the DOM, adding event listeners, setting up and accessing the local storage, etc. These skills are crucial in order to create a website that dynamically reacts to user inputs.
 
 link to quiz: https://dilanli.github.io/Code-Quiz/
 
@@ -23,7 +23,7 @@ link to quiz: https://dilanli.github.io/Code-Quiz/
 
 - Highscore History <br/>
 
-    The highscore history is accessed from local storage by looping through local storage key using an index i. This is different from the information user sees when submitting their initials and score, where that text is .textContent of certain variables, not local storage.
+    The highscore history is accessed from local storage by looping through local storage key using an index i. This is different from the information user sees when submitting their initials and score, where that text is .textContent of certain hmtl elements, not local storage.
 
 - Interface <br/>
 
